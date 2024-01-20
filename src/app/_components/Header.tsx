@@ -20,7 +20,7 @@ export default function Header() {
     <HeaderStyles className='w-full p-5 bg-gray-300'>
        <div className='w-full max-w-6xl m-auto px-4 flex flex-row items-center justify-between'>
           <Link href={'/'} className='font-bold text-xl'>Sitecore Personalize Demo</Link>
-            <Link href='/cart' className='bg-white p-2 block rounded-md'>
+            <Link href='/cart' className='bg-white p-2 block'>
                 <div className='flex flex-row gap-2'><Image src={icon_cart} alt="cart" width={25} height={25} /> Cart : <span className='font-bold inline-block'>
                       {numberCart}
                   </span></div>

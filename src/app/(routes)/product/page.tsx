@@ -21,7 +21,7 @@ export default function ProductPage() {
                 data && data.result.products.map((product: IProduct) => {
                     return (
                         <li key={product.id} className="w-full sm:w-1/2 md:w-1/3 xl:w-1/4 p-4">
-                            <div className="my-2 bg-white rounded-[20px] overflow-hidden relative sm:h-auto md:h-[350px] hover:shadow-md  border-gray-500/20 border-[1px]">
+                            <div className="my-2 bg-white overflow-hidden relative sm:h-auto md:h-[350px]  border-gray-500/20 border-[1px]">
                                     <Link href={`/product/${product.id}`}><Image className="w-full block h-[230px] sm:h-auo border-[1px] border-gray-300" src={product.thumbnail} alt=""  width={200} height={120} /></Link>
                                     <div className="p-4">
                                         <h2 className="capitalize text-xl sm:text-[14px] md:text-[16px] font-bold"><Link href={`/product/${product.id}`}>{product.title}</Link></h2>
