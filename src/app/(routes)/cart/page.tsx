@@ -3,6 +3,7 @@ import { DecreaseQuantity, DeleteCart, IncreaseQuantity } from "@/app/_redux/act
 import { IProduct } from "@/app/_types";
 import Image from "next/image";
 import React from "react";
+import CartContainter from "./CartStyles";
 
 import { useSelector, useDispatch } from 'react-redux';
 export default function CartPage() {
@@ -16,7 +17,7 @@ export default function CartPage() {
       ListCart.push(items.Carts[item]);
   });
   return (
-    <div className="w-full max-w-4xl m-auto">
+    <CartContainter className="w-full max-w-4xl m-auto">
       <table className="w-full table-auto">
         <caption className="caption-top text-left font-bold py-5">
              Carts
@@ -61,9 +62,9 @@ export default function CartPage() {
       </table>
       <div className="w-full">
         <div className="w-full mt-4">
-            <h1 className="font-bold text-2xl text-red-500">Total : {Number(TotalCart).toLocaleString('en-US')} $</h1>
+            <h1 className="font-bold text-2xl">Total : {Number(TotalCart).toLocaleString('en-US')} $</h1>
         </div>
       </div>
-    </div>
+    </CartContainter>
   );
 }
