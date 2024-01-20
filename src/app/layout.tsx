@@ -6,8 +6,8 @@ import Providers from './_redux/provider'
 import Header from './_components/Header'
 const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
-  title: 'Create a simple example Cart in NextJS 13',
-  description: 'Create a simple example Cart in NextJS 13',
+  title: 'Sitecore Personalize Demo',
+  description: 'Sitecore Personalize Demo',
 }
 
 export default function RootLayout({
