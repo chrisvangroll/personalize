@@ -17,7 +17,7 @@ const HeaderStyles = styled.header`
 export default function Header() {
   const  numberCart  = useSelector((state: any) => state._todoProduct.numberCart);
   return (
-    <HeaderStyles className='w-full p-5 bg-gray-300'>
+    <HeaderStyles className='w-full p-5'>
        <div className='w-full max-w-6xl m-auto px-4 flex flex-row items-center justify-between'>
           <Link href={'/'} className='font-bold text-xl'>Sitecore Personalize Demo</Link>
             <Link href='/cart' className='bg-white p-2 block'>
