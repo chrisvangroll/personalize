@@ -5,15 +5,20 @@ import useSWR from 'swr';
 import { fetcher } from '@/app/_libs';
 import { IProduct } from '@/app/_types';
 import HomeContainer from './ProductHomeStyles';
+import { useEffect } from 'react';
+import sendViewEvent from '@/app/_libs/personalize/sendViewEvent';
+import { engage } from '../api/engage';
 
 export default function ProductPage() {
     const { data , error, isLoading } = useSWR<any>(
         `/api/products`,
         fetcher
       );
+
     if (error) return <div>Failed to load</div>;
     if (isLoading) return <div>Loading...</div>;
     if (!data) return null;
+
   return (
     <HomeContainer className='w-full'>
         <ul className='flex flex-wrap mt-4'>

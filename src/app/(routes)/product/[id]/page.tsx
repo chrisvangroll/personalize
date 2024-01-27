@@ -5,14 +5,29 @@ import useSWR from 'swr';
 import { fetcher } from '@/app/_libs';
 import { AddCart } from '@/app/_redux/actions'
 import ProductContainer from './ProductStyles';
+import { useEffect, useRef } from 'react';
+import sendViewEvent from '@/app/_libs/personalize/sendViewEvent';
+import { engage } from '../../api/engage';
 export default function ProductDetailPage({ params }: { params: { id: number } }) {
     const dispatch = useDispatch();
+
+    const hasSentEvent = useRef<boolean>(false);
+
+    useEffect(() => {
+      if (sendViewEvent && !hasSentEvent.current && engage && typeof window != "undefined") {
+        sendViewEvent(engage, window.location.pathname);
+        hasSentEvent.current = true;
+      }
+    }, []);
+
     const { data : product , error, isLoading } = useSWR<any>(
         `/api/products/${params.id}`,fetcher
     );
     if (error) return <div>Failed to load</div>;
     if (isLoading) return <div>Loading...</div>;
     if (!product) return null;
+
+
   return (
     <ProductContainer className='w-full max-w-[400px] m-auto flex flex-col justify-center'>
        <div className="w-full mt-4">
