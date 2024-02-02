@@ -1,15 +1,39 @@
 "use client"
 import { DecreaseQuantity, DeleteCart, IncreaseQuantity } from "@/app/_redux/actions";
-import { IProduct } from "@/app/_types";
 import Image from "next/image";
-import React from "react";
 import CartContainter from "./CartStyles";
 
 import { useSelector, useDispatch } from 'react-redux';
+import { useEffect, useState } from "react";
+import { engage } from "../api/engage";
 export default function CartPage() {
   const dispatch = useDispatch();
   const items = useSelector((state: any) => state._todoProduct);
-  //  console.log(items)
+
+  type ProductsType = {
+    item_id: string
+  }[] | null
+  const [products, setProducts] = useState<ProductsType>(null)
+
+  useEffect(()=>{
+    const itemsInCart = items.Carts.map((item : {id : number})=>({item_id: item.id.toString()}))
+    setProducts(itemsInCart)
+  },[])
+
+  useEffect(()=>{
+    if(products && engage){
+      const eventData = {
+        channel: "WEB",
+        currency: "USD",
+        pointOfSale: "aq",
+        language: "EN",
+        product: products
+      };
+
+      engage?.event("CONFIRM", eventData)
+    }
+  }, [products])
+
   const ListCart: any[] = [];
   let TotalCart=0;
   Object.keys(items.Carts).forEach(function(item){

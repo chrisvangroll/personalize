@@ -21,7 +21,6 @@ export default function Home() {
 
   return (
     <div className="w-full max-w-6xl m-auto">
-      <button onClick={handleClick}>Custom click</button>
       <ProductPage />
     </div>
   );
