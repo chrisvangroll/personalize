@@ -1,51 +1,88 @@
-"use client"
-import { DecreaseQuantity, DeleteCart, IncreaseQuantity } from "@/app/_redux/actions";
+"use client";
+import {
+  DecreaseQuantity,
+  DeleteCart,
+  IncreaseQuantity,
+} from "@/app/_redux/actions";
 import Image from "next/image";
 import CartContainter from "./CartStyles";
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { engage } from "../api/engage";
 import Link from "next/link";
+import { clear } from "console";
 
 export default function CartPage() {
   const dispatch = useDispatch();
   const items = useSelector((state: any) => state._todoProduct);
 
   type ProductsType = {
-    item_id: string
-  }[] | null
-  const [products, setProducts] = useState<ProductsType>(null)
+    item_id: string;
+  }[];
+  const [products, setProducts] = useState<ProductsType>([]);
 
-  useEffect(()=>{
-    const itemsInCart = items.Carts.map((item : {id : number})=>({item_id: item.id.toString()}))
-    setProducts(itemsInCart)
-  },[])
+  useEffect(() => {
+    const itemsInCart = items.Carts.map((item: { id: number }) => ({
+      item_id: item.id.toString(),
+    }));
+    setProducts(itemsInCart);
+  }, []);
 
-  useEffect(()=>{
-    if(products && engage){
+  useEffect(() => {
+    if (products && engage) {
       const eventData = {
         channel: "WEB",
         currency: "USD",
         pointOfSale: "aq",
         language: "EN",
-        product: products
+        product: products,
       };
 
-      engage?.event("CONFIRM", eventData)
+      engage?.event("CONFIRM", eventData);
     }
-  }, [products])
+  }, [products]);
+
+  const clearCart = (id: number, key: number) => {
+    const eventData = {
+      channel: "WEB",
+      currency: "USD",
+      pointOfSale: "aq",
+      language: "EN",
+    };
+    const extensionData = {
+      item_id: id,
+    };
+
+    engage?.event("CLEAR_CART", eventData, extensionData);
+    dispatch(DeleteCart(key));
+  };
+
+  const checkOut = () => {
+    products?.forEach((product) => {
+      const eventData = {
+        channel: "WEB",
+        currency: "USD",
+        pointOfSale: "aq",
+        language: "EN",
+        reference_id: product.item_id,
+        status: "PAYMENT_PENDING",
+      };
+
+      engage?.event("CHECKOUT", eventData);
+    });
+  };
 
   const ListCart: any[] = [];
-  let TotalCart=0;
-  Object.keys(items.Carts).forEach(function(item){
-      TotalCart+=items.Carts[item].quantity * items.Carts[item].price;
-      ListCart.push(items.Carts[item]);
+  let TotalCart = 0;
+  Object.keys(items.Carts).forEach(function (item) {
+    TotalCart += items.Carts[item].quantity * items.Carts[item].price;
+    ListCart.push(items.Carts[item]);
   });
   return (
     <CartContainter className="w-full max-w-4xl m-auto">
       <table className="w-full table-auto">
         <caption className="caption-top text-left font-bold py-5">
-             Carts
+          Carts
         </caption>
         <thead>
           <tr>
@@ -58,39 +95,68 @@ export default function CartPage() {
           </tr>
         </thead>
         <tbody>
-          {
-            ListCart && ListCart.map((cart: any,key : number) => {
+          {ListCart &&
+            ListCart.map((cart: any, key: number) => {
               return (
                 <tr key={cart.id}>
-                  <td className="border border-slate-300 p-2"><button className="bg-red-500 w-10 text-center text-xl px-2 py-1 text-white ml-5"  onClick={()=>dispatch(DeleteCart(key))}>X</button></td>
                   <td className="border border-slate-300 p-2">
-                    <Image src={cart.image} alt={cart.name} width={150} height={150} />
-                    </td>
+                    <button
+                      className="bg-red-500 w-10 text-center text-xl px-2 py-1 text-white ml-5"
+                      onClick={() => clearCart(cart.id, key)}
+                    >
+                      X
+                    </button>
+                  </td>
+                  <td className="border border-slate-300 p-2">
+                    <Image
+                      src={cart.image}
+                      alt={cart.name}
+                      width={150}
+                      height={150}
+                    />
+                  </td>
                   <td className="border border-slate-300 p-2">{cart.name}</td>
                   <td className="border border-slate-300 p-2">{cart.price}</td>
                   <td className="border border-slate-300 p-2">
                     <div className="flex flex-row gap-2 justify-center">
-                          <span className="text-xl px-2 py-1 text-black font-bold cursor-pointer" onClick={() => dispatch(DecreaseQuantity(key))}>-</span>
-                          <span className="bg-gray-400 w-10 text-center text-xl px-1 py-1 text-white font-bold">{cart.quantity}</span>
-                          <span className="text-xl px-2 py-1 text-black cursor-pointer" onClick={() => dispatch(IncreaseQuantity(key))} >+</span>
-                         
+                      <span
+                        className="text-xl px-2 py-1 text-black font-bold cursor-pointer"
+                        onClick={() => dispatch(DecreaseQuantity(key))}
+                      >
+                        -
+                      </span>
+                      <span className="bg-gray-400 w-10 text-center text-xl px-1 py-1 text-white font-bold">
+                        {cart.quantity}
+                      </span>
+                      <span
+                        className="text-xl px-2 py-1 text-black cursor-pointer"
+                        onClick={() => dispatch(IncreaseQuantity(key))}
+                      >
+                        +
+                      </span>
                     </div>
                   </td>
-                  <td className="border border-slate-300 p-2">{(cart.quantity * cart.price).toLocaleString('en-US')} $</td>
-
+                  <td className="border border-slate-300 p-2">
+                    {(cart.quantity * cart.price).toLocaleString("en-US")} $
+                  </td>
                 </tr>
-              )
-            })
-          }
-        
+              );
+            })}
         </tbody>
       </table>
       <div className="w-full">
         <div className="w-full mt-4">
-            <h1 className="font-bold text-2xl">Total : {Number(TotalCart).toLocaleString('en-US')} $</h1>
+          <h1 className="font-bold text-2xl">
+            Total : {Number(TotalCart).toLocaleString("en-US")} $
+          </h1>
         </div>
       </div>
-      <button className="bg-red-500 text-center text-xl px-2 py-1 text-white mt-3"><Link href="/payment">Checkout</Link></button>
+      <button
+        className="bg-red-500 text-center text-xl px-2 py-1 text-white mt-3"
+        onClick={checkOut}
+      >
+        <Link href="/payment">Checkout</Link>
+      </button>
     </CartContainter>
   );
 }
