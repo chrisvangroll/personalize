@@ -2,10 +2,11 @@
 import { DecreaseQuantity, DeleteCart, IncreaseQuantity } from "@/app/_redux/actions";
 import Image from "next/image";
 import CartContainter from "./CartStyles";
-
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from "react";
 import { engage } from "../api/engage";
+import Link from "next/link";
+
 export default function CartPage() {
   const dispatch = useDispatch();
   const items = useSelector((state: any) => state._todoProduct);
@@ -89,6 +90,7 @@ export default function CartPage() {
             <h1 className="font-bold text-2xl">Total : {Number(TotalCart).toLocaleString('en-US')} $</h1>
         </div>
       </div>
+      <button className="bg-red-500 text-center text-xl px-2 py-1 text-white mt-3"><Link href="/payment">Checkout</Link></button>
     </CartContainter>
   );
 }
