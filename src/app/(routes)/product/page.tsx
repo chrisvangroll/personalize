@@ -7,7 +7,7 @@ import { IProduct } from '@/app/_types';
 import HomeContainer from './ProductHomeStyles';
 import { useEffect } from 'react';
 import sendViewEvent from '@/app/_libs/personalize/sendViewEvent';
-import { engage } from '../api/engage';
+import { engage } from '../../pages/api/engage';
 
 export default function ProductPage() {
     const { data , error, isLoading } = useSWR<any>(

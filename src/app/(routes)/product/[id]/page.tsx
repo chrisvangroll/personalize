@@ -5,7 +5,7 @@ import useSWR from "swr";
 import { fetcher } from "@/app/_libs";
 import { AddCart } from "@/app/_redux/actions";
 import ProductContainer from "./ProductStyles";
-import { engage } from "../../api/engage";
+import { engage } from "../../../pages/api/engage";
 export default function ProductDetailPage({
   params,
 }: {
