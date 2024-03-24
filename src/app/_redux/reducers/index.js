@@ -25,6 +25,8 @@ function todoProduct(state = initProduct, action) {
           name: action.payload.title,
           image: action.payload.thumbnail,
           price: action.payload.price,
+          brand: action.payload.brand,
+          category: action.payload.category
         };
         state.Carts.push(cart);
       } else {
@@ -42,6 +44,8 @@ function todoProduct(state = initProduct, action) {
             name: action.payload.title,
             image: action.payload.thumbnail,
             price: action.payload.price,
+            brand: action.payload.brand,
+            category: action.payload.category
           };
           state.Carts.push(_cart);
         }
