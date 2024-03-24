@@ -10,7 +10,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { engage } from "../../pages/api/engage";
 import Link from "next/link";
-import { clear } from "console";
 
 export default function CartPage() {
   const dispatch = useDispatch();
