@@ -14,6 +14,7 @@ import Link from "next/link";
 export default function CartPage() {
   const dispatch = useDispatch();
   const items = useSelector((state: any) => state._todoProduct);
+  const ListCart: any[] = [];
 
   type ProductsType = {
     item_id: string;
@@ -41,7 +42,7 @@ export default function CartPage() {
     }
   }, [products]);
 
-  const clearCart = (id: number, key: number) => {
+  const clearCart = (id: number, key: number, brand: string, category: string) => {
     const eventData = {
       channel: "WEB",
       currency: "USD",
@@ -50,6 +51,8 @@ export default function CartPage() {
     };
     const extensionData = {
       item_id: id,
+      item_brand: brand,
+      item_category: category
     };
 
     engage?.event("CLEAR_CART", eventData, extensionData);
@@ -71,7 +74,6 @@ export default function CartPage() {
     });
   };
 
-  const ListCart: any[] = [];
   let TotalCart = 0;
   Object.keys(items.Carts).forEach(function (item) {
     TotalCart += items.Carts[item].quantity * items.Carts[item].price;
@@ -101,7 +103,7 @@ export default function CartPage() {
                   <td className="border border-slate-300 p-2">
                     <button
                       className="bg-red-500 w-10 text-center text-xl px-2 py-1 text-white ml-5"
-                      onClick={() => clearCart(cart.id, key)}
+                      onClick={() => clearCart(cart.id, key, cart.brand, cart.category)}
                     >
                       X
                     </button>

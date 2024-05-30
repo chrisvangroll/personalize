@@ -1,8 +1,11 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 const HomeContainer = styled.div`
-    img {
-        object-fit: contain;
-    }
-`
+  .product-container {
+    min-height: 370px;
+  }
+  img {
+    object-fit: contain;
+  }
+`;
 export default HomeContainer;
